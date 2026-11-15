@@ -1540,7 +1540,8 @@ class TestGoldenModelOverrides(_IsolatedPublish):
     def test_layer_types_hybrid_swa_memory_off_on_default_aiter(self):
         # The gate has to see the default backend, which resolves after the
         # model overrides run.
-        with override_platform(is_cuda=False, is_hip=True):
+        # is_sm100 off too: on a Blackwell runner the default would be trtllm_mha.
+        with override_platform(is_cuda=False, is_hip=True, is_sm100=False):
             sa = self._construct(
                 "Cohere2ForCausalLM", "llama", config_extra=self._SWA_MIX
             )
